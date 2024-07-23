@@ -9,6 +9,11 @@ const int FONTSET_SIZE = 80;
 const int START_ADRESS = 0x200;
 const int MAX_FILE_SIZE = 3584;
 
+const int SHIFT_FIRST_NIBBLE = 12;
+const int SHIFT_SECOND_NIBBLE = 8;
+const int SHIFT_THIRD_NIBBLE = 4;
+
+
 uint8_t fontset[FONTSET_SIZE] =
 {
 	0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
@@ -28,6 +33,13 @@ uint8_t fontset[FONTSET_SIZE] =
 	0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
 	0xF0, 0x80, 0xF0, 0x80, 0x80  // F
 };
+
+// Isolates nibbles(4 bits) for use in opcode processing
+int extract_nibble(int val, int shiftAmt, int mask = 0xFFFF) {
+	int masked_val = val & mask;
+	return (masked_val >> shiftAmt);
+}
+
 
 CHIP8::CHIP8() : randGen(std::random_device()()), randByte(0, 255) {
 	pc = START_ADRESS;
@@ -75,6 +87,12 @@ void CHIP8::loadGame(std::string gameFilePath) {
 	}
 }
 
-void cycle() {
+void CHIP8::cycle() {
+	uint16_t opcode = memory[pc] << 8 | memory[pc + 1];					// Fetch opcode by getting first byte
+																		// shifting 8 bits to make room for second
+																		// byte and combining them by logical OR
+	uint8_t opcodeFirstNibble = extract_nibble(opcode, SHIFT_FIRST_NIBBLE, 0xF000);
+
 
 }
+

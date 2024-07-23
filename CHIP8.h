@@ -12,13 +12,15 @@ private:
 	uint16_t stack[16];							// 16 level Stack
 
 	uint8_t V[16];								// 16 registers V0-VF
-	uint8_t memory[4096];							// 4K Byte Memory
+	uint8_t memory[4096];						// 4K Byte Memory
 
 	uint8_t soundTimer;							// Sound Timer
 	uint8_t delayTimer;							// Delay Timer
 
 	std::default_random_engine randGen;			// Random number generator
 	std::uniform_int_distribution<uint8_t> randByte;
+
+	int extract_nibble(int, int, int);
 
 public:
 	CHIP8();
