@@ -17,6 +17,9 @@ private:
 	uint8_t soundTimer;							// Sound Timer
 	uint8_t delayTimer;							// Delay Timer
 
+	std::default_random_engine randGen;			// Random number generator
+	std::uniform_int_distribution<uint8_t> randByte;
+
 public:
 	CHIP8();
 	~CHIP8();

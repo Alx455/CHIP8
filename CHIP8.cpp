@@ -2,6 +2,8 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+#include <random>
+#include <chrono>
 
 const int FONTSET_SIZE = 80;
 const int START_ADRESS = 0x200;
@@ -27,7 +29,7 @@ uint8_t fontset[FONTSET_SIZE] =
 	0xF0, 0x80, 0xF0, 0x80, 0x80  // F
 };
 
-CHIP8::CHIP8() {
+CHIP8::CHIP8() : randGen(std::random_device()()), randByte(0, 255) {
 	pc = START_ADRESS;
 	I = 0;
 	sp = 0;
