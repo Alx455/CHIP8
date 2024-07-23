@@ -1,10 +1,12 @@
 #include "CHIP8.h"
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 
-uint16_t FONTSET_START_ADRESS = 0x50;
+const int FONTSET_SIZE = 80;
+const int START_ADRESS = 0x200;
 
-uint8_t fontset[80] =
+uint8_t fontset[FONTSET_SIZE] =
 {
 	0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
 	0x20, 0x60, 0x20, 0x20, 0x70, // 1
@@ -25,6 +27,26 @@ uint8_t fontset[80] =
 };
 
 CHIP8::CHIP8() {
+	pc = START_ADRESS;
+	I = 0;
+	sp = 0;
+	soundTimer = 0;
+	delayTimer = 0;
+
+	std::fill(std::begin(V),std::end(V), 0);
+	std::fill(std::begin(stack), std::end(stack), 0);
+	std::fill(std::begin(memory), std::end(memory), 0);
+	std::fill(std::begin(display), std::end(display), 0);
+	std::fill(std::begin(keypad), std::end(keypad), 0);
+
+	for (int i = 0; i < FONTSET_SIZE; i++) {
+		memory[i] = fontset[i];
+	}
+
+	drawFlag = false;
+
+
+
 
 }
 

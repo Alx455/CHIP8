@@ -12,7 +12,7 @@ private:
 	uint16_t stack[16];							// 16 level Stack
 
 	uint8_t V[16];								// 16 registers V0-VF
-	uint8_t mem[4096];							// 4K Byte Memory
+	uint8_t memory[4096];							// 4K Byte Memory
 
 	uint8_t soundTimer;							// Sound Timer
 	uint8_t delayTimer;							// Delay Timer
