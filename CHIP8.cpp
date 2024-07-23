@@ -5,6 +5,7 @@
 
 const int FONTSET_SIZE = 80;
 const int START_ADRESS = 0x200;
+const int MAX_FILE_SIZE = 3584;
 
 uint8_t fontset[FONTSET_SIZE] =
 {
@@ -44,18 +45,32 @@ CHIP8::CHIP8() {
 	}
 
 	drawFlag = false;
-
-
-
-
+	std::srand(time(NULL));
 }
 
-CHIP8::~CHIP8() {
+void CHIP8::loadGame(std::string gameFilePath) {
+	std::ifstream gameFile(gameFilePath, std::ios::binary, std::ios::ate);
+	if (gameFile.is_open()) {
+		std::streamsize gameFileSize = gameFile.tellg();				// Retrieving size of file
+		gameFile.seekg(0, std::ios::beg);								// Moving back to beginning of file
+		if (gameFileSize > MAX_FILE_SIZE) {								// Exit if a file is too large(exceeds avaiable memory)
+			std::cout << "Game file is too large(May be an invalid file)" << std::endl;
+			return;
+		}
 
-}
+		char* buffer = new char[gameFileSize];							// Creating buffer to load file into memory
+		gameFile.read(buffer, gameFileSize);
+		gameFile.close();
+		
+		for (int i = 0; i < gameFileSize; i++) {						// Loading file into memory
+			memory[START_ADRESS + i] = buffer[i];
+		}
 
-void loadGame(std::string gameFilePath) {
-
+		delete[] buffer;												// Clearing allocated buffer
+	}
+	else {
+		std::cout << "Game file failed to open" << std::endl;
+	}
 }
 
 void cycle() {
