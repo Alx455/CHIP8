@@ -12,6 +12,7 @@ const int MAX_FILE_SIZE = 3584;
 const int SHIFT_FIRST_NIBBLE = 12;
 const int SHIFT_SECOND_NIBBLE = 8;
 const int SHIFT_THIRD_NIBBLE = 4;
+const int SHIFT_LAST_NIBBLE = 0;
 
 
 uint8_t fontset[FONTSET_SIZE] =
@@ -93,6 +94,168 @@ void CHIP8::cycle() {
 																		// byte and combining them by logical OR
 	uint8_t opcodeFirstNibble = extract_nibble(opcode, SHIFT_FIRST_NIBBLE, 0xF000);
 
+	switch (opcodeFirstNibble) {
+	case 0X0:  // Possible instructions: 0x00E0, 0X00EE
+		uint8_t opcodeLastNibble = extract_nibble(opcode, SHIFT_LAST_NIBBLE, 0x000F);
+		switch (opcodeLastNibble) {
+			case 0x0:  // instruciton: 0x00E0
 
+				break;
+
+			case 0xE:  // instruction: 0X00EE
+
+				break;
+		}
+		break;
+
+	case 0X1:  // instruction: 0x1NNN
+
+		break;
+
+	case 0X2:  // instruction: 0x2NNN
+
+		break;
+
+	case 0X3:  // instruction: 0x3XNN
+
+		break;
+
+	case 0x4:  // instruction: 0x4XNN
+
+		break;
+
+	case 0x5:  // instruction: 0x5XY0
+
+		break;
+
+	case 0x6:  // instruction: 0x6XNN
+
+		break;
+
+	case 0x7:  // instruction: 0x7XNN
+
+		break;
+
+	case 0x8:  // Possible instructions: 0x8XY0, 0x8XY1, 0x8XY2, 0x8XY3, 0x8XY4, 0x8XY5, 0x8XY6, 0x8XY7, 0x8XYE
+		uint8_t opcodeLastNibble = extract_nibble(opcode, SHIFT_LAST_NIBBLE, 0x000F);
+		switch (opcodeLastNibble) {
+			case 0x0:  // instruction: 0x8XY0
+
+				break;
+
+			case 0x1:  // instruction: 0x8XY1
+
+				break;
+
+			case 0x2:  // instruction: 0x8XY2
+
+				break;
+
+			case 0x3:  // instruction: 0x8XY3
+
+				break;
+
+			case 0x4:  // instruction: 0x8XY4
+
+				break;
+
+			case 0x5:  // instruction: 0x8XY5
+
+				break;
+
+			case 0x6:  // instruction: 0x8XY6
+
+				break;
+
+			case 0x7:  // instruction: 0x8XY7
+
+				break;
+
+			case 0xE:  // instruction: 0x8XYE
+
+				break;
+
+			
+		}
+		break;
+
+	case 0x9:  // instruction: 0x9XY0
+
+		break;
+
+	case 0xA:  // instruction: 0xANNN
+
+		break;
+
+	case 0xB:  // instruction: 0xBNNN
+
+		break;
+
+	case 0xC:  // instruction: 0xCXNN
+
+		break;
+
+	case 0xD:  // instruction: 0xDXYN
+
+		break;
+
+	case 0xE:  // Possible instruction: 0xEX9E, 0xEXA1
+		int opcodeLastTwoNibbles = extract_nibble(opcode, SHIFT_LAST_NIBBLE, 0x00FF);
+		switch (opcodeLastTwoNibbles) {
+			case 0x9E:  // instruction: 0xEX9E
+
+				break;
+
+			case 0xA1:  // instruction: 0xEXA1
+
+				break;
+		}
+		break;
+
+	case 0xF:  // Possible instructions: 0xFX07, 0xFX15, 0xFX18, 0xFX1E, 0xFX0A, 0xFX29, 0xFX33, 0xFX55, 0xFX65
+		int opcodeLastTwoNibbles = extract_nibble(opcode, SHIFT_LAST_NIBBLE, 0x00FF);
+		switch (opcodeLastTwoNibbles) {
+			case 0x07:  // instruction: 0xFX07
+
+				break;
+
+			case 0x15:  // instruction: 0xFX15
+
+				break;
+
+			case 0x18:  // instruction: 0xFX18
+
+				break;
+
+			case 0x1E:  // instruction: 0xFX1E
+
+				break;
+
+			case 0x0A:  // instruction: 0xFX0A
+
+				break;
+
+			case 0x29:  // instruction: 0xFX29
+
+				break;
+
+			case 0x33:  // instruction: 0xFX33
+
+				break;
+
+			case 0x55:  // instruction: 0xFX55
+
+				break;
+
+			case 0x65:  // instruction: 0xFX65
+
+				break;
+		}
+		break;
+
+	default:
+		std::cout << "Error: CHIP8 is attempting to process an invalid opcode" << std::endl;
+	}
+			
 }
 
