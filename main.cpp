@@ -26,7 +26,10 @@ uint8_t keymap[16]{
 };
 
 int main(int argc, char* argv[]) {
+    const char* romPath = "ROMs/test_opcode.ch8";
 
+    CHIP8 firstDevice;
+    firstDevice.loadGame(romPath);
 
     return 0;
 }
