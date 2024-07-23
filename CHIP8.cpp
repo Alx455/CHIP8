@@ -99,7 +99,9 @@ void CHIP8::cycle() {
 		uint8_t opcodeLastNibble = extract_nibble(opcode, SHIFT_LAST_NIBBLE, 0x000F);
 		switch (opcodeLastNibble) {
 			case 0x0:  // instruciton: 0x00E0
-
+				std::fill(std::begin(display), std::end(display), 0);
+				drawFlag = true;
+				pc += 2;
 				break;
 
 			case 0xE:  // instruction: 0X00EE
@@ -109,7 +111,7 @@ void CHIP8::cycle() {
 		break;
 
 	case 0X1:  // instruction: 0x1NNN
-
+		pc = opcode & 0x0FFF;
 		break;
 
 	case 0X2:  // instruction: 0x2NNN
@@ -129,18 +131,22 @@ void CHIP8::cycle() {
 		break;
 
 	case 0x6:  // instruction: 0x6XNN
-
+		uint8_t opcodeSecondNibble = extract_nibble(opcode, SHIFT_SECOND_NIBBLE, 0x0F00);
+		V[opcodeSecondNibble] = opcode & 0x00FF;
+		pc += 2;
 		break;
 
 	case 0x7:  // instruction: 0x7XNN
-
+		uint8_t opcodeSecondNibble = extract_nibble(opcode, SHIFT_SECOND_NIBBLE, 0x0F00);
+		V[opcodeSecondNibble] += (opcode & 0x00FF);
+		pc += 2;
 		break;
 
 	case 0x8:  // Possible instructions: 0x8XY0, 0x8XY1, 0x8XY2, 0x8XY3, 0x8XY4, 0x8XY5, 0x8XY6, 0x8XY7, 0x8XYE
 		uint8_t opcodeLastNibble = extract_nibble(opcode, SHIFT_LAST_NIBBLE, 0x000F);
 		switch (opcodeLastNibble) {
 			case 0x0:  // instruction: 0x8XY0
-
+				
 				break;
 
 			case 0x1:  // instruction: 0x8XY1
@@ -184,7 +190,8 @@ void CHIP8::cycle() {
 		break;
 
 	case 0xA:  // instruction: 0xANNN
-
+		I = (opcode & 0x0FFF);
+		pc += 2;
 		break;
 
 	case 0xB:  // instruction: 0xBNNN
