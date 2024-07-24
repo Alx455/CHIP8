@@ -1,6 +1,8 @@
 #include <SDL.h>
 #include "CHIP8.h"
 #include <iostream>
+#include <chrono>
+#include <thread>
 
 const int WINDOW_WIDTH = 64;
 const int WINDOW_HEIGHT = 32;
@@ -26,22 +28,12 @@ uint8_t keymap[16]{
 };
 
 int main(int argc, char* argv[]) {
-    std::string gameFilePath = "C:/Users/LENOVO/source/repos/CHIP8/ROMs/test_opcode.ch8";
+    std::string gameFilePath = "C:/Users/LENOVO/source/repos/CHIP8/ROMs/IBM_Logo.ch8";
 
-    CHIP8 firstDevice;
-    firstDevice.loadGame(gameFilePath);
+    CHIP8 chip8;
 
-    int height = 500;
-    int width = 1000;
+    int height = 200;
+    int width = 400;
 
-    SDL_Window* window;
-    SDL_Renderer* renderer;
-    SDL_Texture* texture;
-
-    if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-        printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-        exit(1);
-    }
-
-    return 0;
+    
 }

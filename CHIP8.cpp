@@ -96,8 +96,10 @@ void CHIP8::cycle() {
 	uint8_t opcodeLastNibble = extract_nibble(opcode, SHIFT_LAST_NIBBLE, 0x000F);
 	int opcodeLastTwoNibbles = extract_nibble(opcode, SHIFT_LAST_NIBBLE, 0x00FF);
 	uint8_t opcodeSecondNibble = extract_nibble(opcode, SHIFT_SECOND_NIBBLE, 0x0F00);
+	uint8_t opcodeThirdNibble = extract_nibble(opcode, SHIFT_THIRD_NIBBLE, 0x00F0);
 
 
+	// Opcode divided into 4 nibbles 0xNNNN, where portions are used accordingly in specific instruction
 	switch (opcodeFirstNibble) {
 	case 0X0:  // Possible instructions: 0x00E0, 0X00EE
 		switch (opcode) {
@@ -203,7 +205,29 @@ void CHIP8::cycle() {
 		break;
 
 	case 0xD:  // instruction: 0xDXYN
+		{
+		// Draws sprite at coordinates (x, y) with dimensions of 8 pixel width and N pixel height
+			int x = V[opcodeSecondNibble];
+			int y = V[opcodeThirdNibble];
+			int width = 8;					// chip 8 pixels are 8 bits wide
+			int height = opcodeLastNibble;	// height pixels determined by value in N(last nibble)
+			V[0xF] = 0;						// VF flag register set to 0. If collision occurs(pixel in display buffer
+			// attempts to write over a pixel that is already turned on, 
+			int rowPixelValues;				// pixel value to be displayed
+			for (int i = 0; i < height; i++) {  // i tracks current row
+				rowPixelValues = memory[I + i]; // sprite begins at location memory[I], and is stored in rows of
+												// 8 pixels. So there is N rows of 8 width
+				for (int j = 0; j < width; j++) {  // j tracks current column
+					int mask = 0x80 >> j;	 // creates a mask for the jth pixel(count bits(pixels) from right to left)
+					if ((rowPixelValues & mask) != 0) { // checks if jth pixel is on(1)
+						int coordinate = ((x + j) + (y + i) * 64) % 2048;  // calculating 2D coordinate (x, y) as 1D value in display
+						if (display[coordinate] == 1)
+							V[0xF] = 1;		// Collision occured, Vf flag set to 1
+						display[coordinate] = display[coordinate] ^ 1;
+					}
+				}
 
+			}
 		break;
 
 	case 0xE:  // Possible instruction: 0xEX9E, 0xEXA1
