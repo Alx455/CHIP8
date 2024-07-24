@@ -26,10 +26,10 @@ uint8_t keymap[16]{
 };
 
 int main(int argc, char* argv[]) {
-    const char* romPath = "C:\Users\LENOVO\source\repos\CHIP8\ROMs\test_opcode.ch8";
+    std::string gameFilePath = "C:/Users/LENOVO/source/repos/CHIP8/ROMs/test_opcode.ch8";
 
     CHIP8 firstDevice;
-    firstDevice.loadGame(romPath);
+    firstDevice.loadGame(gameFilePath);
 
     int height = 500;
     int width = 1000;

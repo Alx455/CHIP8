@@ -65,17 +65,7 @@ CHIP8::CHIP8() : randGen(std::random_device()()), randByte(0, 255) {
 }
 
 void CHIP8::loadGame(const std::string gameFilePath) {
-
-	std::cout << "Attempting to load game from: " << gameFilePath << std::endl;
-
-	// Check if file exists
-	if (!std::filesystem::exists(gameFilePath)) {
-		std::cerr << "File does not exist: " << gameFilePath << std::endl;
-		return;
-	}
-
-
-	std::ifstream gameFile(gameFilePath,std::ios::in | std::ios::binary, std::ios::ate);
+	std::ifstream gameFile(gameFilePath, std::ios::in | std::ios::binary | std::ios::ate);
 	if (!gameFile.is_open()) {
 		std::cout << "Game file failed to open" << std::endl;
 	}
