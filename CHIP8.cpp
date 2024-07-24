@@ -35,7 +35,7 @@ uint8_t fontset[FONTSET_SIZE] =
 };
 
 // Isolates nibbles(4 bits) for use in opcode processing
-int extract_nibble(int val, int shiftAmt, int mask = 0xFFFF) {
+int CHIP8::extract_nibble(int val, int shiftAmt, int mask = 0xFFFF) {
 	int masked_val = val & mask;
 	return (masked_val >> shiftAmt);
 }
