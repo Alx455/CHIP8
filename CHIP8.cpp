@@ -3,6 +3,8 @@
 #include <fstream>
 #include <algorithm>
 
+#include <filesystem>
+
 
 const int FONTSET_SIZE = 80;
 const int START_ADRESS = 0x200;
@@ -62,29 +64,38 @@ CHIP8::CHIP8() : randGen(std::random_device()()), randByte(0, 255) {
 	std::srand(static_cast<unsigned int>(time(NULL)));
 }
 
-void CHIP8::loadGame(std::string gameFilePath) {
-	std::ifstream gameFile(gameFilePath, std::ios::binary, std::ios::ate);
-	if (gameFile.is_open()) {
-		std::streamsize gameFileSize = gameFile.tellg();				// Retrieving size of file
-		gameFile.seekg(0, std::ios::beg);								// Moving back to beginning of file
-		if (gameFileSize > MAX_FILE_SIZE) {								// Exit if a file is too large(exceeds avaiable memory)
-			std::cout << "Game file is too large(May be an invalid file)" << std::endl;
-			return;
-		}
+void CHIP8::loadGame(const std::string gameFilePath) {
 
-		char* buffer = new char[gameFileSize];							// Creating buffer to load file into memory
-		gameFile.read(buffer, gameFileSize);
-		gameFile.close();
-		
-		for (int i = 0; i < gameFileSize; i++) {						// Loading file into memory
-			memory[START_ADRESS + i] = buffer[i];
-		}
+	std::cout << "Attempting to load game from: " << gameFilePath << std::endl;
 
-		delete[] buffer;												// Clearing allocated buffer
+	// Check if file exists
+	if (!std::filesystem::exists(gameFilePath)) {
+		std::cerr << "File does not exist: " << gameFilePath << std::endl;
+		return;
 	}
-	else {
+
+
+	std::ifstream gameFile(gameFilePath,std::ios::in | std::ios::binary, std::ios::ate);
+	if (!gameFile.is_open()) {
 		std::cout << "Game file failed to open" << std::endl;
 	}
+
+	std::streamsize gameFileSize = gameFile.tellg();				// Retrieving size of file
+	gameFile.seekg(0, std::ios::beg);								// Moving back to beginning of file
+	if (gameFileSize > MAX_FILE_SIZE) {								// Exit if a file is too large(exceeds avaiable memory)
+		std::cout << "Game file is too large(May be an invalid file)" << std::endl;
+		return;
+	}
+
+	char* buffer = new char[gameFileSize];							// Creating buffer to load file into memory
+	gameFile.read(buffer, gameFileSize);
+	gameFile.close();
+		
+	for (int i = 0; i < gameFileSize; i++) {						// Loading file into memory
+		memory[START_ADRESS + i] = buffer[i];
+	}
+
+	delete[] buffer;												// Clearing allocated buffer
 }
 
 void CHIP8::cycle() {
