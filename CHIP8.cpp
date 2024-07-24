@@ -2,8 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-#include <random>
-#include <chrono>
+
 
 const int FONTSET_SIZE = 80;
 const int START_ADRESS = 0x200;
@@ -60,7 +59,7 @@ CHIP8::CHIP8() : randGen(std::random_device()()), randByte(0, 255) {
 	}
 
 	drawFlag = false;
-	std::srand(time(NULL));
+	std::srand(static_cast<unsigned int>(time(NULL)));
 }
 
 void CHIP8::loadGame(std::string gameFilePath) {
@@ -93,18 +92,21 @@ void CHIP8::cycle() {
 																		// shifting 8 bits to make room for second
 																		// byte and combining them by logical OR
 	uint8_t opcodeFirstNibble = extract_nibble(opcode, SHIFT_FIRST_NIBBLE, 0xF000);
+	uint8_t opcodeLastNibble = extract_nibble(opcode, SHIFT_LAST_NIBBLE, 0x000F);
+	int opcodeLastTwoNibbles = extract_nibble(opcode, SHIFT_LAST_NIBBLE, 0x00FF);
+	uint8_t opcodeSecondNibble = extract_nibble(opcode, SHIFT_SECOND_NIBBLE, 0x0F00);
+
 
 	switch (opcodeFirstNibble) {
 	case 0X0:  // Possible instructions: 0x00E0, 0X00EE
-		uint8_t opcodeLastNibble = extract_nibble(opcode, SHIFT_LAST_NIBBLE, 0x000F);
-		switch (opcodeLastNibble) {
-			case 0x0:  // instruciton: 0x00E0
+		switch (opcode) {
+			case 0x00E0:  // instruciton: 0x00E0
 				std::fill(std::begin(display), std::end(display), 0);
 				drawFlag = true;
 				pc += 2;
 				break;
 
-			case 0xE:  // instruction: 0X00EE
+			case 0x00EE:  // instruction: 0X00EE
 
 				break;
 		}
@@ -131,19 +133,16 @@ void CHIP8::cycle() {
 		break;
 
 	case 0x6:  // instruction: 0x6XNN
-		uint8_t opcodeSecondNibble = extract_nibble(opcode, SHIFT_SECOND_NIBBLE, 0x0F00);
 		V[opcodeSecondNibble] = opcode & 0x00FF;
 		pc += 2;
 		break;
 
 	case 0x7:  // instruction: 0x7XNN
-		uint8_t opcodeSecondNibble = extract_nibble(opcode, SHIFT_SECOND_NIBBLE, 0x0F00);
 		V[opcodeSecondNibble] += (opcode & 0x00FF);
 		pc += 2;
 		break;
 
 	case 0x8:  // Possible instructions: 0x8XY0, 0x8XY1, 0x8XY2, 0x8XY3, 0x8XY4, 0x8XY5, 0x8XY6, 0x8XY7, 0x8XYE
-		uint8_t opcodeLastNibble = extract_nibble(opcode, SHIFT_LAST_NIBBLE, 0x000F);
 		switch (opcodeLastNibble) {
 			case 0x0:  // instruction: 0x8XY0
 				
@@ -207,7 +206,6 @@ void CHIP8::cycle() {
 		break;
 
 	case 0xE:  // Possible instruction: 0xEX9E, 0xEXA1
-		int opcodeLastTwoNibbles = extract_nibble(opcode, SHIFT_LAST_NIBBLE, 0x00FF);
 		switch (opcodeLastTwoNibbles) {
 			case 0x9E:  // instruction: 0xEX9E
 
@@ -220,7 +218,6 @@ void CHIP8::cycle() {
 		break;
 
 	case 0xF:  // Possible instructions: 0xFX07, 0xFX15, 0xFX18, 0xFX1E, 0xFX0A, 0xFX29, 0xFX33, 0xFX55, 0xFX65
-		int opcodeLastTwoNibbles = extract_nibble(opcode, SHIFT_LAST_NIBBLE, 0x00FF);
 		switch (opcodeLastTwoNibbles) {
 			case 0x07:  // instruction: 0xFX07
 

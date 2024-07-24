@@ -31,5 +31,17 @@ int main(int argc, char* argv[]) {
     CHIP8 firstDevice;
     firstDevice.loadGame(romPath);
 
+    int height = 500;
+    int width = 1000;
+
+    SDL_Window* window;
+    SDL_Renderer* renderer;
+    SDL_Texture* texture;
+
+    if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
+        printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+        exit(1);
+    }
+
     return 0;
 }

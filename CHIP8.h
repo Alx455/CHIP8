@@ -2,6 +2,8 @@
 #define CHIP8_H
 
 #include <string>
+#include <random>
+#include <chrono>
 
 class CHIP8 {
 private:
@@ -18,7 +20,7 @@ private:
 	uint8_t delayTimer;							// Delay Timer
 
 	std::default_random_engine randGen;			// Random number generator
-	std::uniform_int_distribution<uint8_t> randByte;
+	std::uniform_int_distribution<unsigned int> randByte;
 
 	int extract_nibble(int, int, int);
 
