@@ -308,11 +308,17 @@ void CHIP8::cycle() {
 				break;
 
 			case 0x18:  // instruction: 0xFX18
-
+				soundTimer = V[opcodeSecondNibble];
+				pc += 2;
 				break;
 
 			case 0x1E:  // instruction: 0xFX1E
-
+				if ((I + V[opcodeSecondNibble]) > 0x0FFF)	// flag if overflow occurs
+					V[0xF] = 1;
+				else
+					V[0xF] = 0;
+				I += V[opcodeSecondNibble];
+				pc += 2;
 				break;
 
 			case 0x0A:  // instruction: 0xFX0A
