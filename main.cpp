@@ -27,7 +27,7 @@ uint8_t keymap[KEYMAP_SIZE]{ // KEYBOARD_KEY = CHIP8_KEY
 };
 
 int main(int argc, char* argv[]) {
-    std::string gameFilePath = "C:/Users/LENOVO/source/repos/CHIP8/ROMs/TETRIS.ch8";
+    std::string gameFilePath = "C:/Users/LENOVO/source/repos/CHIP8/ROMs/PONG.ch8";
 
     CHIP8 chip8;
 
@@ -63,7 +63,11 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
-    chip8.loadGame(gameFilePath);
+    bool loaded = chip8.loadGame(gameFilePath);
+    if (!loaded) {
+        std::cout << "GAME LOAD ERROR" << std::endl;
+        return 0;
+    }
     uint32_t SDLpixelBuffer[WINDOW_WIDTH * WINDOW_HEIGHT];
 
     while (true) {

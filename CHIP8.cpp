@@ -64,17 +64,18 @@ CHIP8::CHIP8() : randGen(std::random_device()()), randByte(0, 255) {
 	std::srand(static_cast<unsigned int>(time(NULL)));
 }
 
-void CHIP8::loadGame(const std::string gameFilePath) {
+bool CHIP8::loadGame(const std::string gameFilePath) {
 	std::ifstream gameFile(gameFilePath, std::ios::in | std::ios::binary | std::ios::ate);
 	if (!gameFile.is_open()) {
 		std::cout << "Game file failed to open" << std::endl;
+		return false;
 	}
 
 	std::streamsize gameFileSize = gameFile.tellg();				// Retrieving size of file
 	gameFile.seekg(0, std::ios::beg);								// Moving back to beginning of file
 	if (gameFileSize > MAX_FILE_SIZE) {								// Exit if a file is too large(exceeds avaiable memory)
 		std::cout << "Game file is too large(May be an invalid file)" << std::endl;
-		return;
+		return false;
 	}
 
 	char* buffer = new char[gameFileSize];							// Creating buffer to load file into memory
@@ -86,6 +87,7 @@ void CHIP8::loadGame(const std::string gameFilePath) {
 	}
 
 	delete[] buffer;												// Clearing allocated buffer
+	return true;
 }
 
 void CHIP8::cycle() {
@@ -323,6 +325,10 @@ void CHIP8::cycle() {
 
 			case 0x0A:  // instruction: 0xFX0A
 				
+
+			
+
+
 
 			case 0x29:  // instruction: 0xFX29
 				I = V[opcodeSecondNibble] * 0x5;

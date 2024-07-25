@@ -29,7 +29,7 @@ public:
 
 	bool drawFlag;								// Indicates need to update display
 
-	void loadGame(const std::string gameFilePath);	// Loads a ROM file given a file path
+	bool loadGame(const std::string gameFilePath);	// Loads a ROM file given a file path
 	void cycle();								// Emulate a single cycle
 
 	uint8_t display[64 * 32];					// Display
