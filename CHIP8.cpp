@@ -128,15 +128,24 @@ void CHIP8::cycle() {
 		break;
 
 	case 0X3:  // instruction: 0x3XNN
-
+		if (V[opcodeSecondNibble] == opcodeLastTwoNibbles)
+			pc += 4;
+		else
+			pc += 2;
 		break;
 
 	case 0x4:  // instruction: 0x4XNN
-
+		if (V[opcodeSecondNibble] != opcodeLastTwoNibbles)
+			pc += 4;
+		else
+			pc += 2;
 		break;
 
 	case 0x5:  // instruction: 0x5XY0
-
+		if (V[opcodeSecondNibble] == V[opcodeThirdNibble])
+			pc += 4;
+		else
+			pc += 2;
 		break;
 
 	case 0x6:  // instruction: 0x6XNN
