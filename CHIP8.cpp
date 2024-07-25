@@ -218,6 +218,7 @@ void CHIP8::cycle() {
 
 	case 0xC:  // instruction: 0xCXNN
 		V[opcodeSecondNibble] = randByte(randGen) & opcodeLastTwoNibbles;
+		pc += 2;
 		break;
 
 	case 0xD:  // instruction: 0xDXYN
@@ -252,11 +253,17 @@ void CHIP8::cycle() {
 	case 0xE:  // Possible instruction: 0xEX9E, 0xEXA1
 		switch (opcodeLastTwoNibbles) {
 			case 0x9E:  // instruction: 0xEX9E
-
+				if (keypad[V[opcodeSecondNibble]] != 0)
+					pc += 4;
+				else
+					pc += 2;
 				break;
 
 			case 0xA1:  // instruction: 0xEXA1
-
+				if (keypad[V[opcodeSecondNibble]] == 0)
+					pc += 4;
+				else
+					pc += 2;
 				break;
 		}
 		break;
