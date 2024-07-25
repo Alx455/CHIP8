@@ -228,6 +228,9 @@ void CHIP8::cycle() {
 				}
 
 			}
+			drawFlag = true;
+			pc += 2;
+		}
 		break;
 
 	case 0xE:  // Possible instruction: 0xEX9E, 0xEXA1
@@ -284,7 +287,6 @@ void CHIP8::cycle() {
 
 	default:
 		std::cout << "Error: CHIP8 is attempting to process an invalid opcode" << std::endl;
-	}
-			
+	}			
 }
 
