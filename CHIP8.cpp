@@ -201,7 +201,7 @@ void CHIP8::cycle() {
 		break;
 
 	case 0xB:  // instruction: 0xBNNN
-
+		pc = (opcode & 0x0FFF) + V[0];
 		break;
 
 	case 0xC:  // instruction: 0xCXNN
