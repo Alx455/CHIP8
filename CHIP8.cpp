@@ -322,15 +322,18 @@ void CHIP8::cycle() {
 				break;
 
 			case 0x0A:  // instruction: 0xFX0A
-
-				break;
+				
 
 			case 0x29:  // instruction: 0xFX29
-
+				I = V[opcodeSecondNibble] * 0x5;
+				pc += 2;
 				break;
 
 			case 0x33:  // instruction: 0xFX33
-
+				memory[I] = V[opcodeSecondNibble] / 100;
+				memory[I + 1] = (V[opcodeSecondNibble] / 10) % 10;
+				memory[I + 2] = V[opcodeSecondNibble] % 10;
+				pc += 2;
 				break;
 
 			case 0x55:  // instruction: 0xFX55
