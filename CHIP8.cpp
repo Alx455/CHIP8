@@ -201,7 +201,10 @@ void CHIP8::cycle() {
 		break;
 
 	case 0x9:  // instruction: 0x9XY0
-
+		if (V[opcodeSecondNibble] != V[opcodeThirdNibble])
+			pc += 4;
+		else
+			pc += 2;
 		break;
 
 	case 0xA:  // instruction: 0xANNN
@@ -214,7 +217,7 @@ void CHIP8::cycle() {
 		break;
 
 	case 0xC:  // instruction: 0xCXNN
-
+		V[opcodeSecondNibble] = randByte(randGen) & opcodeLastTwoNibbles;
 		break;
 
 	case 0xD:  // instruction: 0xDXYN
