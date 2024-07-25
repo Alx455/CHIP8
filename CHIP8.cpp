@@ -337,11 +337,17 @@ void CHIP8::cycle() {
 				break;
 
 			case 0x55:  // instruction: 0xFX55
-
+				for (int i = 0; i <= opcodeSecondNibble; i++) {
+					memory[I + i] = V[i];
+				}
+				pc += 2;
 				break;
 
 			case 0x65:  // instruction: 0xFX65
-
+				for (int i = 0; i <= opcodeSecondNibble; i++) {
+					V[i] = memory[I + i];
+				}
+				pc += 2;
 				break;
 		}
 		break;
