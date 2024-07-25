@@ -110,7 +110,9 @@ void CHIP8::cycle() {
 				break;
 
 			case 0x00EE:  // instruction: 0X00EE
-
+				sp--;
+				pc = stack[sp];
+				pc += 2;
 				break;
 		}
 		break;
@@ -120,7 +122,9 @@ void CHIP8::cycle() {
 		break;
 
 	case 0X2:  // instruction: 0x2NNN
-
+		stack[sp] = pc;
+		sp++;
+		pc = opcode & 0x0FFF;
 		break;
 
 	case 0X3:  // instruction: 0x3XNN
