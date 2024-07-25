@@ -298,11 +298,13 @@ void CHIP8::cycle() {
 	case 0xF:  // Possible instructions: 0xFX07, 0xFX15, 0xFX18, 0xFX1E, 0xFX0A, 0xFX29, 0xFX33, 0xFX55, 0xFX65
 		switch (opcodeLastTwoNibbles) {
 			case 0x07:  // instruction: 0xFX07
-
+				V[opcodeSecondNibble] = delayTimer;
+				pc += 2;
 				break;
 
 			case 0x15:  // instruction: 0xFX15
-
+				delayTimer = V[opcodeSecondNibble];
+				pc += 2;
 				break;
 
 			case 0x18:  // instruction: 0xFX18
