@@ -161,42 +161,69 @@ void CHIP8::cycle() {
 	case 0x8:  // Possible instructions: 0x8XY0, 0x8XY1, 0x8XY2, 0x8XY3, 0x8XY4, 0x8XY5, 0x8XY6, 0x8XY7, 0x8XYE
 		switch (opcodeLastNibble) {
 			case 0x0:  // instruction: 0x8XY0
-				
+				V[opcodeSecondNibble] = V[opcodeThirdNibble];
+				pc += 2;
 				break;
 
 			case 0x1:  // instruction: 0x8XY1
-
+				V[opcodeSecondNibble] = V[opcodeSecondNibble] | V[opcodeThirdNibble];
+				pc += 2;
 				break;
 
 			case 0x2:  // instruction: 0x8XY2
-
+				V[opcodeSecondNibble] = V[opcodeSecondNibble] & V[opcodeThirdNibble];
+				pc += 2;
 				break;
 
 			case 0x3:  // instruction: 0x8XY3
-
+				V[opcodeSecondNibble] = V[opcodeSecondNibble] ^ V[opcodeThirdNibble];
+				pc += 2;
 				break;
 
 			case 0x4:  // instruction: 0x8XY4
-
+				if ((0xFF - V[opcodeSecondNibble]) < V[opcodeThirdNibble])
+					V[0xF] = 1;
+				else
+					V[0xF] = 0;
+				V[opcodeSecondNibble] += V[opcodeThirdNibble];
+				pc += 2;
 				break;
 
 			case 0x5:  // instruction: 0x8XY5
-
+				if (V[opcodeSecondNibble] > V[opcodeThirdNibble])
+					V[0xF] = 1;
+				else
+					V[0xF] = 0;
+				V[opcodeSecondNibble] -= V[opcodeThirdNibble];
+				pc += 2;
 				break;
 
 			case 0x6:  // instruction: 0x8XY6
-
+				if ((V[opcodeSecondNibble] & 0x1) == 0x1)
+					V[0xF] = 1;
+				else
+					V[0xF] = 0;
+				V[opcodeSecondNibble] = V[opcodeSecondNibble] >> 1;
+				pc += 2;
 				break;
 
 			case 0x7:  // instruction: 0x8XY7
-
+				if (V[opcodeSecondNibble] < V[opcodeThirdNibble])
+					V[0xF] = 1;
+				else
+					V[0xF] = 0;
+				V[opcodeSecondNibble] = V[opcodeThirdNibble] - V[opcodeSecondNibble];
+				pc += 2;
 				break;
 
 			case 0xE:  // instruction: 0x8XYE
-
+				if ((V[opcodeSecondNibble] & 0x80) == 0x80)
+					V[0xF] = 1;
+				else
+					V[0xF] = 0;
+				V[opcodeSecondNibble] = V[opcodeSecondNibble] << 1;
+				pc += 2;
 				break;
-
-			
 		}
 		break;
 
