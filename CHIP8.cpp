@@ -100,6 +100,20 @@ void CHIP8::cycle() {
 	uint8_t opcodeSecondNibble = extract_nibble(opcode, SHIFT_SECOND_NIBBLE, 0x0F00);
 	uint8_t opcodeThirdNibble = extract_nibble(opcode, SHIFT_THIRD_NIBBLE, 0x00F0);
 
+	/*    For Debugging purposes
+	if (true)
+	{
+		printf("%.4X %.4X %.2X ", pc, opcode, sp);
+		for (int i = 0; i < 15; i++) {
+			printf("%.2X ", V[i]);
+		}
+		printf("KEYPAD");
+		for (int i = 0; i < 16; i++) {
+			printf("%.2X ", keypad[i]);
+		}
+		printf("\n");
+	}
+	*/
 
 	// Opcode divided into 4 nibbles 0xNNNN, where portions are used accordingly in specific instruction
 	switch (opcodeFirstNibble) {
@@ -188,6 +202,7 @@ void CHIP8::cycle() {
 				else
 					V[0xF] = 0;
 				V[opcodeSecondNibble] += V[opcodeThirdNibble];
+
 				pc += 2;
 				break;
 
@@ -324,11 +339,18 @@ void CHIP8::cycle() {
 				break;
 
 			case 0x0A:  // instruction: 0xFX0A
-				
-
-			
-
-
+			{
+				bool key_pressed = false;
+				for (int i = 0; i < 16; i++) {
+					if (keypad[i] != 0) {
+						key_pressed = true;
+						V[opcodeSecondNibble] = (uint8_t)i;
+					}
+				}
+				if (key_pressed)
+					pc += 2;
+				break;
+			}
 
 			case 0x29:  // instruction: 0xFX29
 				I = V[opcodeSecondNibble] * 0x5;
@@ -361,5 +383,12 @@ void CHIP8::cycle() {
 	default:
 		std::cout << "Error: CHIP8 is attempting to process an invalid opcode" << std::endl;
 	}			
+
+	if (delayTimer > 0)
+		--delayTimer;
+
+	if (soundTimer > 0)
+		if (soundTimer == 1);
+			--soundTimer;
 }
 

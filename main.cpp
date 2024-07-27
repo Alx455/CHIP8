@@ -27,7 +27,7 @@ uint8_t keymap[KEYMAP_SIZE]{ // KEYBOARD_KEY = CHIP8_KEY
 };
 
 int main(int argc, char* argv[]) {
-    std::string gameFilePath = "C:/Users/LENOVO/source/repos/CHIP8/ROMs/PONG.ch8";
+    std::string gameFilePath = "C:/Users/LENOVO/source/repos/CHIP8/ROMs/PONG2.ch8";
 
     CHIP8 chip8;
 
