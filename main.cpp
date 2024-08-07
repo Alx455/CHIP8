@@ -3,6 +3,7 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include <vector>
 
 
 const int KEYMAP_SIZE = 16;
@@ -27,7 +28,32 @@ uint8_t keymap[KEYMAP_SIZE]{ // KEYBOARD_KEY = CHIP8_KEY
 };
 
 int main(int argc, char* argv[]) {
-    std::string gameFilePath = "C:/Users/LENOVO/source/repos/CHIP8/ROMs/PONG2.ch8";
+
+    int selection;
+    std::string gameFilePath;
+    std::cout << "(0) Space invaders" << std::endl;
+    std::cout << "(1) Breakout" << std::endl;
+    std::cout << "(2) Pong" << std::endl;
+    std::cout << "(3) UFO" << std::endl;
+    std::cout << "(4) Tetris" << std::endl;
+    std::cout << "(5) Connect4" << std::endl;
+    std::cout << "Select a game, enter the corresponding number:" << std::endl;
+    std::cin >> selection;
+    std::vector<std::string> games = { "C:/Users/LENOVO/source/repos/CHIP8/ROMs/INVADERS.ch8",
+                                        "C:/Users/LENOVO/source/repos/CHIP8/ROMs/BREAKOUT.ch8",
+                                        "C:/Users/LENOVO/source/repos/CHIP8/ROMs/PONG2.ch8",
+                                        "C:/Users/LENOVO/source/repos/CHIP8/ROMs/UFO.ch8",
+                                        "C:/Users/LENOVO/source/repos/CHIP8/ROMs/TETRIS.ch8",
+                                        "C:/Users/LENOVO/source/repos/CHIP8/ROMs/CONNECT4.ch8"
+
+                                        };
+    if (selection >= 0 && selection < games.size()) {
+        gameFilePath = games[selection];        // Load and run the game using gameFilePath
+    }
+    else {
+        std::cout << "Invalid selection." << std::endl;
+    }
+    // std::string gameFilePath = "C:/Users/LENOVO/source/repos/CHIP8/ROMs/BRICK.ch8";
 
     CHIP8 chip8;
 
