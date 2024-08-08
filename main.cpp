@@ -45,7 +45,6 @@ int main(int argc, char* argv[]) {
                                         "C:/Users/LENOVO/source/repos/CHIP8/ROMs/UFO.ch8",
                                         "C:/Users/LENOVO/source/repos/CHIP8/ROMs/TETRIS.ch8",
                                         "C:/Users/LENOVO/source/repos/CHIP8/ROMs/CONNECT4.ch8"
-
                                         };
     if (selection >= 0 && selection < games.size()) {
         gameFilePath = games[selection];        // Load and run the game using gameFilePath
